@@ -10,12 +10,6 @@ public class SmoothSliderHealth : MonoBehaviour
 
     private Coroutine _coroutine;
 
-    private void Start()
-    {
-        _slider.maxValue = _health.MaxHealth;
-        _slider.minValue = 0;
-    }
-
     private void OnEnable()
     {
         _health.HealthChanged += ChangValue;
@@ -37,14 +31,14 @@ public class SmoothSliderHealth : MonoBehaviour
     private IEnumerator ChangingValue()
     {
         float start = _slider.value;
-        float end = _health.CurrentHealth;
+        float end = _health.CurrentHealth / _health.MaxHealth;
         float time = 0f;
 
         while (time < _timeSmooth)
         {
             time += Time.deltaTime;
 
-            _slider.value = Mathf.Lerp(start, end, time/_timeSmooth);
+            _slider.value = Mathf.Lerp(start, end, time / _timeSmooth);
             yield return null;
         }
     }
