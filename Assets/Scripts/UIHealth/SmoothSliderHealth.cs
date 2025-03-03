@@ -2,25 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SmoothSliderHealth : MonoBehaviour
+public class SmoothSliderHealth : SliderHealth
 {
-    [SerializeField] private Health _health;
-    [SerializeField] private Slider _slider;
     [SerializeField] private float _timeSmooth;
 
     private Coroutine _coroutine;
 
-    private void OnEnable()
-    {
-        _health.HealthChanged += ChangValue;
-    }
-
-    private void OnDisable()
-    {
-        _health.HealthChanged -= ChangValue;
-    }
-
-    private void ChangValue()
+    protected override void ChangeValue()
     {
         if (_coroutine != null)
             StopCoroutine(_coroutine);
@@ -41,5 +29,7 @@ public class SmoothSliderHealth : MonoBehaviour
             _slider.value = Mathf.Lerp(start, end, time / _timeSmooth);
             yield return null;
         }
+
+        _slider.value = end;
     }
 }
